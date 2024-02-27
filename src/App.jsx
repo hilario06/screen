@@ -3,22 +3,32 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+import { Plugins } from '@capacitor/core';
+
+const { ScreenOrientation } = Plugins;
+
 function App() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    // Verificar y cambiar la orientación automáticamente
-    const checkOrientation = () => {
-      if (window.screen.orientation.type === 'portrait-primary') {
-        window.screen.orientation.lock('landscape-primary')
-          .then(() => console.log('La orientación se ha bloqueado con éxito en horizontal.'))
-          .catch(err => console.error('Error al bloquear la orientación:', err));
+    const lockOrientation = async () => {
+      try {
+        await ScreenOrientation.lock({
+          orientation: 'landscape'
+        });
+        console.log('La orientación se ha bloqueado con éxito en horizontal.');
+      } catch (error) {
+        console.error('Error al bloquear la orientación:', error);
       }
     };
 
-    // Ejecutar la función al cargar la página
-    checkOrientation();
-  }, [])
+    lockOrientation();
+
+    // Importante: desbloquear la orientación al salir de la aplicación
+    return () => {
+      ScreenOrientation.unlock();
+    };
+  }, []);
 
   return (
     <>
