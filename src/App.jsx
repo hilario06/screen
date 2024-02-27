@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      <div style={{ height: "100vh" }}>
+      <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
